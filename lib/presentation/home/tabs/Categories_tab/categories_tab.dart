@@ -66,6 +66,7 @@ class _CategoriesTabState extends State<CategoriesTab> {
                           CategoriesTabViewModel.get(context).
                           getSubCategories(state.categories[selectedIndex].id??'');
 
+
                         },
                           category: state.categories[index],isSelected: index==selectedIndex,),
                       separatorBuilder: (context, index) => SizedBox(
