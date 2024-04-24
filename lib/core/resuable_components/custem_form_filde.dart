@@ -41,7 +41,7 @@ class CustomTextFormField extends StatelessWidget {
           TextFormField(
 
             decoration: InputDecoration(
-              fillColor: Colors.white,
+           //   fillColor: Colors.white,
               filled: true,
               label: Text(
                 lable,

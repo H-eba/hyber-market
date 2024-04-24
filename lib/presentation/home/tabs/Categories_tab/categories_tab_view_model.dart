@@ -9,8 +9,9 @@ import 'package:injectable/injectable.dart';
 import '../../../../domain/use_cases/get_sub_categories_use_case/get_sub_categories_use_case.dart';
 @injectable
 class CategoriesTabViewModel extends Cubit<CategoriesTabStates>{
-  @factoryMethod
+
   static CategoriesTabViewModel get(context)=>BlocProvider.of(context);
+  @factoryMethod
   CategoriesTabViewModel(this.getCategoriesUseCase,this.subCategoriesOfSpecificCategoryUseCase):super(CategoriesTabInitialStates());
 GetCategoriesUseCase getCategoriesUseCase;
   getSubCategoriesOfSpecificCategoryUseCase subCategoriesOfSpecificCategoryUseCase;
