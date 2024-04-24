@@ -62,6 +62,7 @@ class _CategoriesTabState extends State<CategoriesTab> {
                           selectedIndex=index;
                           setState(() {
 
+
                           });
                           CategoriesTabViewModel.get(context).
                           getSubCategories(state.categories[selectedIndex].id??'');
