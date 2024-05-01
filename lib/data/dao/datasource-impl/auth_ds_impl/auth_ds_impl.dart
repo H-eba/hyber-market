@@ -30,5 +30,26 @@ if (authResponse.statusMsg!=null){
      return Right(error.toString());
     }
   }
+
+  @override
+  Future<Either<AuthResponse, String>> signIn({required String email, required String password})async {
+    try{
+      var response=await apiManager.postRequest(endPoint: EndPoint.signInEndPoint,body: {
+
+        "email":email,
+        "password":password,
+
+      });
+      AuthResponse authResponse=AuthResponse.fromJson(response.data);
+      if (authResponse.statusMsg!=null){
+        return Right(authResponse.message??'');
+      }else{
+        return Left(authResponse);
+      }
+    }catch(error){
+      return Right(error.toString());
+    }
+
+  }
   
 }

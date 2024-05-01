@@ -34,7 +34,7 @@ import '../../data/repository_implementation/brands_repo_impl/brands_repo_impl.d
 import '../../data/repository_implementation/categories_repo_impl/categories_repo_impl.dart'
     as _i22;
 import '../../data/repository_implementation/products_repo_impl/Products_repo_impl.dart'
-    as _i25;
+    as _i27;
 import '../../data/repository_implementation/sub_categories_repo_imp/sub_categories_repo_imp.dart'
     as _i17;
 import '../../domain/repository_contract/auth_repo/auth_repo.dart' as _i14;
@@ -42,23 +42,25 @@ import '../../domain/repository_contract/brands_repo/brands_repo.dart' as _i10;
 import '../../domain/repository_contract/category_repo/category_repo.dart'
     as _i21;
 import '../../domain/repository_contract/products_repo/products_repo.dart'
-    as _i24;
+    as _i26;
 import '../../domain/repository_contract/sub_categories_repo/sub_categories_repo.dart'
     as _i16;
-import '../../domain/use_cases/auth_use_case/sign_up_use_case.dart' as _i23;
+import '../../domain/use_cases/auth_use_case/sign_in_use_case.dart' as _i23;
+import '../../domain/use_cases/auth_use_case/sign_up_use_case.dart' as _i24;
 import '../../domain/use_cases/get_brands_use_case/get_brands_use_case.dart'
     as _i18;
-import '../../domain/use_cases/get_category_use_case.dart' as _i26;
+import '../../domain/use_cases/get_category_use_case.dart' as _i28;
 import '../../domain/use_cases/get_most_selling_products_use_case/get_most_selling_products_use_case.dart'
-    as _i29;
-import '../../domain/use_cases/get_sub_categories_use_case/get_sub_categories_use_case.dart'
-    as _i28;
-import '../../presentation/home/tabs/Categories_tab/categories_tab_view_model.dart'
-    as _i30;
-import '../../presentation/home/tabs/home_tab/viewmodel/home_tab_view_model.dart'
     as _i31;
-import '../../presentation/registerl/register_view_mode/sign_up__view_mode.dart'
-    as _i27;
+import '../../domain/use_cases/get_sub_categories_use_case/get_sub_categories_use_case.dart'
+    as _i30;
+import '../../presentation/home/login_screen/login_view_model.dart' as _i25;
+import '../../presentation/home/register_screen/register_view_mode/sign_up__view_mode.dart'
+    as _i29;
+import '../../presentation/home/tabs/Categories_tab/categories_tab_view_model.dart'
+    as _i32;
+import '../../presentation/home/tabs/home_tab/viewmodel/home_tab_view_model.dart'
+    as _i33;
 import '../api/api_manager/api_manager.dart' as _i3;
 
 extension GetItInjectableX on _i1.GetIt {
@@ -93,27 +95,31 @@ extension GetItInjectableX on _i1.GetIt {
         () => _i20.ProductsDataSourceImpl(gh<_i3.ApiManager>()));
     gh.factory<_i21.CategoriesRepo>(
         () => _i22.CategoriesRepoImpl(gh<_i4.CategoriesDataSource>()));
-    gh.factory<_i23.SignUpUseCase>(
-        () => _i23.SignUpUseCase(gh<_i14.AuthRepo>()));
-    gh.factory<_i24.ProductsRepo>(
-        () => _i25.ProductsRepoImpl(gh<_i19.ProductsDataSource>()));
-    gh.factory<_i26.GetCategoriesUseCase>(
-        () => _i26.GetCategoriesUseCase(gh<_i21.CategoriesRepo>()));
-    gh.factory<_i27.SignUpViewModel>(
-        () => _i27.SignUpViewModel(gh<_i23.SignUpUseCase>()));
-    gh.factory<_i28.getSubCategoriesOfSpecificCategoryUseCase>(() =>
-        _i28.getSubCategoriesOfSpecificCategoryUseCase(
+    gh.factory<_i23.SignInUseCase>(
+        () => _i23.SignInUseCase(gh<_i14.AuthRepo>()));
+    gh.factory<_i24.SignUpUseCase>(
+        () => _i24.SignUpUseCase(gh<_i14.AuthRepo>()));
+    gh.factory<_i25.LoginViewModel>(
+        () => _i25.LoginViewModel(gh<_i23.SignInUseCase>()));
+    gh.factory<_i26.ProductsRepo>(
+        () => _i27.ProductsRepoImpl(gh<_i19.ProductsDataSource>()));
+    gh.factory<_i28.GetCategoriesUseCase>(
+        () => _i28.GetCategoriesUseCase(gh<_i21.CategoriesRepo>()));
+    gh.factory<_i29.SignUpViewModel>(
+        () => _i29.SignUpViewModel(gh<_i24.SignUpUseCase>()));
+    gh.factory<_i30.getSubCategoriesOfSpecificCategoryUseCase>(() =>
+        _i30.getSubCategoriesOfSpecificCategoryUseCase(
             gh<_i16.SubCategoriesRepo>()));
-    gh.factory<_i29.GetMostSellingProductsUseCase>(
-        () => _i29.GetMostSellingProductsUseCase(gh<_i24.ProductsRepo>()));
-    gh.factory<_i30.CategoriesTabViewModel>(() => _i30.CategoriesTabViewModel(
-          gh<_i26.GetCategoriesUseCase>(),
-          gh<_i28.getSubCategoriesOfSpecificCategoryUseCase>(),
+    gh.factory<_i31.GetMostSellingProductsUseCase>(
+        () => _i31.GetMostSellingProductsUseCase(gh<_i26.ProductsRepo>()));
+    gh.factory<_i32.CategoriesTabViewModel>(() => _i32.CategoriesTabViewModel(
+          gh<_i28.GetCategoriesUseCase>(),
+          gh<_i30.getSubCategoriesOfSpecificCategoryUseCase>(),
         ));
-    gh.factory<_i31.HomeTabViewModel>(() => _i31.HomeTabViewModel(
-          gh<_i26.GetCategoriesUseCase>(),
+    gh.factory<_i33.HomeTabViewModel>(() => _i33.HomeTabViewModel(
+          gh<_i28.GetCategoriesUseCase>(),
           gh<_i18.GetBrandsUseCase>(),
-          gh<_i29.GetMostSellingProductsUseCase>(),
+          gh<_i31.GetMostSellingProductsUseCase>(),
         ));
     return this;
   }

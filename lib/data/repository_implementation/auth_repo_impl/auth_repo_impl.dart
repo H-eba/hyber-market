@@ -25,4 +25,15 @@ class AuthRepoImpl extends AuthRepo {
       return Right(error);
     });
   }
+
+  @override
+  Future<Either<AuthEntity, String>> signIn({required String email, required String password})async {
+    var result=await apiDataSource.signIn(email: email, password: password);
+    return result.fold((response) {
+      AuthEntity authEntity = response.toAuthEntity();
+      return Left(authEntity);
+    }, (error) {
+      return Right(error);
+    });
+  }
 }

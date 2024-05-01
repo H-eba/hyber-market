@@ -8,4 +8,9 @@ abstract class AuthDataSource{
     required String rePassword,
     required String phone,
   });
+  Future<Either<AuthResponse,String>>signIn({
+    required String email,
+    required String password,
+
+  });
 }

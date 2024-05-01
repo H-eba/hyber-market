@@ -3,7 +3,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 
-import '../../../domain/use_cases/auth_use_case/sign_up_use_case.dart';
+import '../../../../domain/use_cases/auth_use_case/sign_up_use_case.dart';
+
+
 @injectable
 class SignUpViewModel extends Cubit<SignUpStates>{
   static SignUpViewModel get(BuildContext context)=>BlocProvider.of(context);

@@ -1,4 +1,5 @@
 import 'package:ecommerce/config/them/them.dart';
+import 'package:ecommerce/core/local/prefsHelper.dart';
 import 'package:ecommerce/core/utils/route_manager.dart';
 import 'package:ecommerce/presentation/home/login_screen/login.dart';
 import 'package:ecommerce/presentation/home/register_screen/register.dart';
@@ -18,7 +19,10 @@ class MyApp extends StatelessWidget {
       minTextAdapt: true,
       builder: (context, child) =>  MaterialApp(
         debugShowCheckedModeBanner: false,
-      initialRoute:  RoutesManager.loginRouteName,
+      initialRoute: PrefsHelper.getToken().isNotEmpty?
+          RoutesManager.homeRouteName
+         : RoutesManager.loginRouteName,
+
       routes: {
         RoutesManager.homeRouteName:(_)=>HomeScreen(),
         RoutesManager.registerRouteName:(_)=>RegisterScreen(),

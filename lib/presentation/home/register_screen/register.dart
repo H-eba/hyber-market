@@ -1,6 +1,8 @@
 import 'package:ecommerce/core/DI/di.dart';
+import 'package:ecommerce/core/local/prefsHelper.dart';
 import 'package:ecommerce/core/utils/route_manager.dart';
-import 'package:ecommerce/presentation/registerl/register_view_mode/sign_up__view_mode.dart';
+import 'package:ecommerce/presentation/home/register_screen/register_view_mode/sign_up__view_mode.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -142,6 +144,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         child: BlocConsumer<SignUpViewModel,SignUpStates>(
                           listener: (context, state) {
                             if(state is SignUpSuccessState){
+                              PrefsHelper.saveToken(state.authEntity.token??'');
+                              Navigator.pushNamedAndRemoveUntil(context,RoutesManager.homeRouteName, (route) => false);
                             Fluttertoast.showToast(
                                   msg: "account created successfully",
                                   toastLength: Toast.LENGTH_SHORT,
@@ -173,7 +177,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                          return
                            CustomButton(title: StringsManager.signUp, onPressed: () {
                              registerValidate();
-                             Navigator.of(context).pushNamed(RoutesManager.homeRouteName);
                              SignUpViewModel.get(context).sigUp(fullName: fullNameController.text,
                                  email: emailController.text,
                                  password: passwordController.text,

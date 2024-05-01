@@ -1,4 +1,6 @@
+import 'package:ecommerce/core/local/prefsHelper.dart';
 import 'package:ecommerce/core/utils/assets_manager.dart';
+import 'package:ecommerce/core/utils/route_manager.dart';
 import 'package:ecommerce/presentation/home/tabs/Categories_tab/categories_tab.dart';
 import 'package:ecommerce/presentation/home/tabs/home_tab/home_tab.dart';
 import 'package:ecommerce/presentation/home/tabs/home_view_model.dart';
@@ -21,6 +23,7 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+   // print(PrefsHelper.getToken());
     return BlocProvider(
       create: (context)=>HomeViewModel(),
       child: BlocBuilder<HomeViewModel,HomeStates>(
@@ -34,6 +37,11 @@ class HomeScreen extends StatelessWidget {
                 width: 66.w,
               ),
               actions: [
+                IconButton(onPressed: () {
+                  PrefsHelper.clearToken();
+                  Navigator.pushNamedAndRemoveUntil(context, RoutesManager.loginRouteName, (route) => false);
+                }, icon:Icon(Icons.logout) ),
+
                 IconButton(onPressed: () {
 
                 }, icon: SvgPicture.asset(

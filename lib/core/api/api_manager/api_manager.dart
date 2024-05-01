@@ -5,8 +5,16 @@ import 'package:injectable/injectable.dart';
 class ApiManager {
   static late Dio dio;
   static void init() {
-    dio = Dio(BaseOptions(
+    dio = Dio(
+        BaseOptions(
       baseUrl: Constants.baseUrl,
+          validateStatus: (status) {
+            if(status!<500){
+              return true;
+            }else{
+              return false;
+            }
+          },
     ));
   }
 
