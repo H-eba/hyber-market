@@ -2,11 +2,14 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:ecommerce/core/utils/assets_manager.dart';
 import 'package:ecommerce/core/utils/strings_manager.dart';
 import 'package:ecommerce/domain/entites/ProductEntity.dart';
+import 'package:ecommerce/presentation/home/tabs/home_tab/viewmodel/home_tab_view_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class ProductWidget extends StatelessWidget {
   ProductEntity productEntity;
@@ -107,11 +110,61 @@ class ProductWidget extends StatelessWidget {
                     width: 15.w,
                   ),
                   Spacer(),
-                  SvgPicture.asset(
-                    AssetsManager.plusIcon,
-                    height: 30.h,
-                    width: 30.w,
-                  ),
+                 BlocConsumer<HomeTabViewModel,HomeTabStates>(
+                   buildWhen: (previous, current) {
+                     if(current is AddToCartLoadingState||
+                         current is AddToCartSuccessState||
+                         current is AddToCartErorrState){
+                       return true;
+                     }return false;
+                   },
+                   builder: (context, state) {
+
+                   if(state is AddToCartLoadingState && state.productId==productEntity.id){
+                     return SizedBox(
+                       height: 30.h,
+                       width: 30.w,
+                       child: Center(child: CircularProgressIndicator(
+                         color:Colors.white,
+                       ),),
+                     );
+                   }
+                   return InkWell(
+                     onTap: () {
+                    HomeTabViewModel.get(context).addToCart(productEntity.id??'');
+                     },
+                     child:SvgPicture.asset(
+                       AssetsManager.plusIcon,
+                       height: 30.h,
+                       width: 30.w,
+                     ),
+                   );
+                 },
+                     listener: (context, state) {
+                        if (state is AddToCartSuccessState&& state.productId==productEntity.id){
+                          Fluttertoast.showToast(
+                              msg: state.cartResponseEntity.message??'',
+                              toastLength: Toast.LENGTH_SHORT,
+                              gravity: ToastGravity.BOTTOM,
+                              timeInSecForIosWeb: 1,
+                              backgroundColor: Colors.green,
+                              textColor: Colors.white,
+                              fontSize: 16.0
+                          );
+                        }
+                        if(state is AddToCartErorrState&& state.productId==productEntity.id){
+                          Fluttertoast.showToast(
+                              msg: state.error,
+                              toastLength: Toast.LENGTH_SHORT,
+                              gravity: ToastGravity.BOTTOM,
+                              timeInSecForIosWeb: 1,
+                              backgroundColor: Colors.red,
+                              textColor: Colors.white,
+                              fontSize: 16.0
+                          );
+                        }
+                     },
+                 )
                 ],),
               )
             ],

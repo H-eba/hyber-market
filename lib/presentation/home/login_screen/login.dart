@@ -134,6 +134,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             textColor: Colors.white,
                             fontSize: 16.0
                         );
+                       //  print(state.authEntity.user?.email??'');
                       }
                       if(state is LoginErrorState){
                         Fluttertoast.showToast(

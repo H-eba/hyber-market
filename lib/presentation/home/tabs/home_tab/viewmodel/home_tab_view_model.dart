@@ -1,7 +1,10 @@
 import 'package:ecommerce/domain/entites/BrandEntity.dart';
+import 'package:ecommerce/domain/entites/cart/CartResponseEntity.dart';
+import 'package:ecommerce/domain/use_cases/add_to_cart_use_case/add_to_cart_use_case.dart';
 import 'package:ecommerce/domain/use_cases/get_brands_use_case/get_brands_use_case.dart';
 import 'package:ecommerce/domain/use_cases/get_category_use_case.dart';
 import 'package:ecommerce/domain/use_cases/get_most_selling_products_use_case/get_most_selling_products_use_case.dart';
+import 'package:ecommerce/presentation/home/tabs/home_screen.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 
@@ -10,39 +13,87 @@ import '../../../../../domain/entites/ProductEntity.dart';
 @injectable
 class HomeTabViewModel extends Cubit<HomeTabStates> {
   @factoryMethod
-  HomeTabViewModel(this.categoriesUseCase,this.brandsUseCase,this.MostSellingProductsUseCase) : super(HomeTabInitialState());
+  HomeTabViewModel(this.addToCartUseCase,this.categoriesUseCase,this.brandsUseCase,this.MostSellingProductsUseCase) : super(HomeTabInitialState());
   static HomeTabViewModel get(context) => BlocProvider.of(context);
   GetCategoriesUseCase categoriesUseCase;
   GetBrandsUseCase brandsUseCase;
+  AddToCartUseCase addToCartUseCase;
   GetMostSellingProductsUseCase MostSellingProductsUseCase;
+ addToCart(String productId)async{
+   if (!isClosed){
+     emit(AddToCartLoadingState(productId));
+   }
 
+   var result=await addToCartUseCase.call(productId: productId);
+   result.fold((response) {
+     if(!isClosed){
+       emit(AddToCartSuccessState(response,productId));
+     }
+
+
+   }, (error)
+   {
+     if(!isClosed){
+       emit(AddToCartErorrState(error,productId  ));
+     }
+
+   }
+   );
+ }
   getCategory() async {
-    emit(CategoriesLoadingState());
+    if (!isClosed){
+      emit(CategoriesLoadingState());
+    }
+
     var results = await categoriesUseCase.call();
     results.fold((categories) {
-      emit(CategoriesSuccessState(categories));
+      if (!isClosed){
+        emit(CategoriesSuccessState(categories));
+      }
+
     }, (error) {
-      emit(CategoriesErrorState(error));
+      if (!isClosed){
+        emit(CategoriesErrorState(error));
+      }
+
     });
   }
   getBrands()async{
-    emit(BrandsInitialState());
+   if(!isClosed){
+     emit(BrandsInitialState());
+   }
+
     var result=await brandsUseCase.call();
     result.fold((brands) {
-      emit(BrandsSuccessState(brands));
+      if(!isClosed){
+        emit(BrandsSuccessState(brands));
+      }
+
     }
     , (error) {
-    emit(BrandsErrorState(error));
+          if(!isClosed){
+            emit(BrandsErrorState(error));
+          }
+
   });
   }
   getMostSellingProducts()async{
-    emit(mostSellingCategoryProductsLoadingState());
+   if(!isClosed){
+     emit(mostSellingCategoryProductsLoadingState());
+   }
+
     var result=await MostSellingProductsUseCase.call();
     result.fold((products) {
-      emit(mostSellingCategoryProductsSuccessState(products));
+      if(!isClosed){
+        emit(mostSellingCategoryProductsSuccessState(products));
+      }
+
     }
         , (error) {
-          emit(mostSellingCategoryProductsErorrState(error));
+          if(!isClosed){
+            emit(mostSellingCategoryProductsErorrState(error));
+          }
+
         });
   }
 }
@@ -83,4 +134,21 @@ class mostSellingCategoryProductsErorrState extends HomeTabStates {
   String error;
   mostSellingCategoryProductsErorrState(this.error);
 }
+
+///add to cart
+class AddToCartLoadingState extends HomeTabStates{
+  String productId;
+  AddToCartLoadingState(this.productId);
+}
+class AddToCartSuccessState extends HomeTabStates{
+  CartResponseEntity cartResponseEntity;
+  String productId;
+  AddToCartSuccessState(this.cartResponseEntity,this.productId);
+}
+class AddToCartErorrState extends HomeTabStates{
+  String error;
+  String productId;
+  AddToCartErorrState(this.error,this.productId);
+}
+
 

@@ -1,10 +1,14 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+
+import '../../../../data/model/auth/UserModel.dart';
 
 class ProfileTab extends StatelessWidget {
-  const ProfileTab({super.key});
+
+   ProfileTab({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Container(color: CupertinoColors.systemGreen,);
+    return Container(color: Colors.red,);
   }
 }

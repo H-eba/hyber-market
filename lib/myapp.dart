@@ -1,6 +1,7 @@
 import 'package:ecommerce/config/them/them.dart';
 import 'package:ecommerce/core/local/prefsHelper.dart';
 import 'package:ecommerce/core/utils/route_manager.dart';
+import 'package:ecommerce/presentation/cart/cart_screen.dart';
 import 'package:ecommerce/presentation/home/login_screen/login.dart';
 import 'package:ecommerce/presentation/home/register_screen/register.dart';
 import 'package:ecommerce/presentation/home/tabs/home_screen.dart';
@@ -27,6 +28,7 @@ class MyApp extends StatelessWidget {
         RoutesManager.homeRouteName:(_)=>HomeScreen(),
         RoutesManager.registerRouteName:(_)=>RegisterScreen(),
         RoutesManager.loginRouteName:(_)=>LoginScreen(),
+        RoutesManager.cartRouteName:(_)=>CartScreen(),
       },
       theme: MyThem.lightTheme,
 

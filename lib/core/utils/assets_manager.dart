@@ -15,6 +15,10 @@ class AssetsManager{
   static const String whishUnSelected='assets/images/whishListUnSelected.svg';
   static const String whishSelected='assets/images/watchedListSelected.svg';
   static const String cartIcon='assets/images/cart.svg';
+  static const String delete='assets/images/delete 1.svg';
+  static const String arrow='assets/images/arrow.svg';
+  static const String add='assets/images/icon _plus circle_.svg';
+  static const String subtract='assets/images/icon _subtract circle minus remove_.svg';
 
 
 

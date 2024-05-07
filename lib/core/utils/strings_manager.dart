@@ -16,6 +16,9 @@ class StringsManager{
   static const String mobileTitle='mobile number';
   static const String mobileHint='enter your mobile number';
   static const String signUp='sign up';
+  static const String cart='Cart';
+  static const String checkOut='checkOut';
+  static const String totalPrice='total Price';
 
 
 }

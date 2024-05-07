@@ -1,6 +1,7 @@
 import 'package:ecommerce/core/local/prefsHelper.dart';
 import 'package:ecommerce/core/utils/assets_manager.dart';
 import 'package:ecommerce/core/utils/route_manager.dart';
+import 'package:ecommerce/domain/entites/cart/CartResponseEntity.dart';
 import 'package:ecommerce/presentation/home/tabs/Categories_tab/categories_tab.dart';
 import 'package:ecommerce/presentation/home/tabs/home_tab/home_tab.dart';
 import 'package:ecommerce/presentation/home/tabs/home_view_model.dart';
@@ -13,7 +14,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 
 class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
+  CartResponseEntity?cartResponseEntity;
+   HomeScreen({this.cartResponseEntity,super.key});
   static List<Widget>tabs=[
     HomeTab(),
     CategoriesTab(),
@@ -42,12 +44,15 @@ class HomeScreen extends StatelessWidget {
                   Navigator.pushNamedAndRemoveUntil(context, RoutesManager.loginRouteName, (route) => false);
                 }, icon:Icon(Icons.logout) ),
 
-                IconButton(onPressed: () {
-
-                }, icon: SvgPicture.asset(
-            AssetsManager.cartIcon,
-            height: 22.h,
-            width: 66.w,),)
+                Badge(
+                  label:Text('${cartResponseEntity?.numOfCartItems??0}'),
+                  child: IconButton(onPressed: () {
+                   Navigator.pushNamed(context,RoutesManager.cartRouteName);
+                  }, icon: SvgPicture.asset(
+                              AssetsManager.cartIcon,
+                              height: 22.h,
+                              width: 66.w,),),
+                )
               ],
             ),
             bottomNavigationBar: ClipRRect(
@@ -63,7 +68,7 @@ class HomeScreen extends StatelessWidget {
                 items: [
                   BottomNavigationBarItem(
                       backgroundColor: Theme.of(context).colorScheme.primary,
-      
+
                       icon: SvgPicture.asset(AssetsManager.homeUnSelected,
                         width:40.w,
                         height: 40.h,),
@@ -102,15 +107,15 @@ class HomeScreen extends StatelessWidget {
                         height: 40.h,),
                       label: ''
                   ),
-      
-      
+
+
                 ],
               ),
             ),
             body: tabs[homeViewModel.currentTabIndex],
           );
         },
-      
+
       ),
     );
   }
