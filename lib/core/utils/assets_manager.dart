@@ -19,7 +19,7 @@ class AssetsManager{
   static const String arrow='assets/images/arrow.svg';
   static const String add='assets/images/icon _plus circle_.svg';
   static const String subtract='assets/images/icon _subtract circle minus remove_.svg';
-
+  static const String fivorateselected='assets/images/selectfivorate.svg';
 
 
 

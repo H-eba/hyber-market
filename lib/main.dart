@@ -1,5 +1,6 @@
 import 'package:ecommerce/core/api/api_manager/api_manager.dart';
 import 'package:ecommerce/core/local/prefsHelper.dart';
+import 'package:ecommerce/presentation/cart/view_model/view_model_cubit.dart';
 import 'package:ecommerce/presentation/home/tabs/home_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -14,11 +15,15 @@ void main() async{
   ApiManager.init();
   await PrefsHelper.init();
   configureDependencies();
-  runApp(const MyApp());
-      //BlocProvider(
-    //  create: (BuildContext context)=>HomeViewModel(),
 
-    // child:  const MyApp()));
+
+  runApp(
+     // const MyApp());
+      BlocProvider(
+
+      create: (BuildContext context)=> getIt<CartViewModel>(),
+
+    child:  const MyApp()));
 }
 
 

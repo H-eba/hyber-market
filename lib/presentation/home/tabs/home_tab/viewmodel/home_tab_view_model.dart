@@ -1,45 +1,52 @@
+import 'package:ecommerce/data/model/wish_list/WishListResponseModel.dart';
 import 'package:ecommerce/domain/entites/BrandEntity.dart';
 import 'package:ecommerce/domain/entites/cart/CartResponseEntity.dart';
+import 'package:ecommerce/domain/entites/wishListEntity/AddToWhishListEntity.dart';
 import 'package:ecommerce/domain/use_cases/add_to_cart_use_case/add_to_cart_use_case.dart';
 import 'package:ecommerce/domain/use_cases/get_brands_use_case/get_brands_use_case.dart';
 import 'package:ecommerce/domain/use_cases/get_category_use_case.dart';
 import 'package:ecommerce/domain/use_cases/get_most_selling_products_use_case/get_most_selling_products_use_case.dart';
+import 'package:ecommerce/domain/use_cases/wish_list/add_wish_list_item_use_case.dart';
 import 'package:ecommerce/presentation/home/tabs/home_screen.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 
+
 import '../../../../../domain/entites/CategoryEntity.dart';
 import '../../../../../domain/entites/ProductEntity.dart';
+
 @injectable
 class HomeTabViewModel extends Cubit<HomeTabStates> {
   @factoryMethod
-  HomeTabViewModel(this.addToCartUseCase,this.categoriesUseCase,this.brandsUseCase,this.MostSellingProductsUseCase) : super(HomeTabInitialState());
+  HomeTabViewModel(this.addToWishListUseCase,this.categoriesUseCase,this.brandsUseCase,this.MostSellingProductsUseCase) : super(HomeTabInitialState());
   static HomeTabViewModel get(context) => BlocProvider.of(context);
   GetCategoriesUseCase categoriesUseCase;
   GetBrandsUseCase brandsUseCase;
-  AddToCartUseCase addToCartUseCase;
+
+  AddToWishListUseCase addToWishListUseCase;
   GetMostSellingProductsUseCase MostSellingProductsUseCase;
- addToCart(String productId)async{
-   if (!isClosed){
-     emit(AddToCartLoadingState(productId));
-   }
+  addToWishList(String productId)async{
+    if (!isClosed){
+      emit(AddToWishListLoadingState(productId));
+    }
 
-   var result=await addToCartUseCase.call(productId: productId);
-   result.fold((response) {
-     if(!isClosed){
-       emit(AddToCartSuccessState(response,productId));
-     }
+    var result=await addToWishListUseCase.call(productId: productId);
+    result.fold((response) {
+      if(!isClosed){
+       emit(AddToWishListSuccessState(response, productId));
+      }
 
 
-   }, (error)
-   {
-     if(!isClosed){
-       emit(AddToCartErorrState(error,productId  ));
-     }
+    }, (error)
+    {
+      if(!isClosed){
+       emit(AddToWishListErrorState(error,productId));
+      }
 
-   }
-   );
- }
+    }
+    );
+  }
+
   getCategory() async {
     if (!isClosed){
       emit(CategoriesLoadingState());
@@ -136,6 +143,7 @@ class mostSellingCategoryProductsErorrState extends HomeTabStates {
 }
 
 ///add to cart
+/*
 class AddToCartLoadingState extends HomeTabStates{
   String productId;
   AddToCartLoadingState(this.productId);
@@ -149,6 +157,25 @@ class AddToCartErorrState extends HomeTabStates{
   String error;
   String productId;
   AddToCartErorrState(this.error,this.productId);
+}
+
+ */
+///add to wish list
+
+class  AddToWishListLoadingState extends  HomeTabStates {
+  String productId;
+  AddToWishListLoadingState(this.productId);
+
+}
+class  AddToWishListSuccessState extends  HomeTabStates {
+AddToWishListEntity addToWishListResponseModel;
+  String productId;
+  AddToWishListSuccessState(this.addToWishListResponseModel,this.productId);
+}
+class  AddToWishListErrorState extends  HomeTabStates {
+  String error;
+  String productId;
+  AddToWishListErrorState(this.error,this.productId);
 }
 
 

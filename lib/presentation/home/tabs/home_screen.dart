@@ -1,7 +1,10 @@
+import 'package:dartz/dartz.dart';
 import 'package:ecommerce/core/local/prefsHelper.dart';
 import 'package:ecommerce/core/utils/assets_manager.dart';
 import 'package:ecommerce/core/utils/route_manager.dart';
 import 'package:ecommerce/domain/entites/cart/CartResponseEntity.dart';
+import 'package:ecommerce/presentation/cart/view_model/view_model_cubit.dart';
+import 'package:ecommerce/presentation/cart/view_model/view_model_states.dart';
 import 'package:ecommerce/presentation/home/tabs/Categories_tab/categories_tab.dart';
 import 'package:ecommerce/presentation/home/tabs/home_tab/home_tab.dart';
 import 'package:ecommerce/presentation/home/tabs/home_view_model.dart';
@@ -12,6 +15,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class HomeScreen extends StatelessWidget {
   CartResponseEntity?cartResponseEntity;
@@ -26,11 +30,13 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
    // print(PrefsHelper.getToken());
+   // CartViewModel cart=CartViewModel.get(context);
     return BlocProvider(
       create: (context)=>HomeViewModel(),
       child: BlocBuilder<HomeViewModel,HomeStates>(
         builder: (context,state){
           HomeViewModel homeViewModel=HomeViewModel.get(context);
+         // HomeViewModel cartViewModel=CartViewModel.get(context);
           return Scaffold(
             appBar: AppBar(
               title: SvgPicture.asset(
@@ -44,15 +50,39 @@ class HomeScreen extends StatelessWidget {
                   Navigator.pushNamedAndRemoveUntil(context, RoutesManager.loginRouteName, (route) => false);
                 }, icon:Icon(Icons.logout) ),
 
-                Badge(
-                  label:Text('${cartResponseEntity?.numOfCartItems??0}'),
-                  child: IconButton(onPressed: () {
-                   Navigator.pushNamed(context,RoutesManager.cartRouteName);
-                  }, icon: SvgPicture.asset(
-                              AssetsManager.cartIcon,
-                              height: 22.h,
-                              width: 66.w,),),
+               BlocConsumer<CartViewModel,CartViewModelState>(
+                  buildWhen: (previous, current) {
+                    if(current is AddToCartLoadingState||
+                        current is AddToCartSuccessState||
+                        current is AddToCartErorrState){
+                      return true;
+                    }return false;
+                  },
+                  builder: (context, state) {
+
+                    if(state is AddToCartSuccessState ){
+                      return Badge(
+
+                        label:Text(state.cartResponseEntity.numOfCartItems.toString(),),
+                        child: IconButton(onPressed: () {
+                          Navigator.pushNamed(context,RoutesManager.cartRouteName);
+                        }, icon: SvgPicture.asset(
+                          AssetsManager.cartIcon,
+                          height: 22.h,
+                          width: 66.w,),),
+                      );
+                    }
+                    if(state is AddToCartLoadingState){
+                      return Center(child: CircularProgressIndicator(),);
+                    }return Center(child:Text('error'),);
+                  },
+                 listener: (context, state) {
+
+                 },
                 )
+
+
+
               ],
             ),
             bottomNavigationBar: ClipRRect(

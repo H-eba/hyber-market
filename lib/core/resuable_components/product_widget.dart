@@ -2,6 +2,8 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:ecommerce/core/utils/assets_manager.dart';
 import 'package:ecommerce/core/utils/strings_manager.dart';
 import 'package:ecommerce/domain/entites/ProductEntity.dart';
+import 'package:ecommerce/presentation/cart/view_model/view_model_cubit.dart';
+import 'package:ecommerce/presentation/cart/view_model/view_model_states.dart';
 import 'package:ecommerce/presentation/home/tabs/home_tab/viewmodel/home_tab_view_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -47,11 +49,67 @@ class ProductWidget extends StatelessWidget {
                   ),
                 ),
               ),
-              SvgPicture.asset(
+              BlocConsumer<HomeTabViewModel,HomeTabStates>(
+                buildWhen: (previous, current) {
+                  if(current is AddToWishListLoadingState||
+                      current is AddToWishListErrorState||
+                      current is AddToWishListSuccessState){
+                    return true;
+                  }return false;
+                },
+                builder: (context, state) {
+
+                  if(state is AddToWishListLoadingState && state.productId==productEntity.id){
+                    return SizedBox(
+                      height: 30.h,
+                      width: 30.w,
+                      child: Center(child: CircularProgressIndicator(
+                        color:Colors.white,
+                      ),),
+                    );
+                  }
+                  return InkWell(
+                    onTap: () {
+                      HomeTabViewModel.get(context).addToWishList(productEntity.id??'' );
+
+                    },
+                    child:SvgPicture.asset(
+                      AssetsManager.watchedListIcon,
+                      height: 30.h,
+                      width: 30.w,
+                    ),
+                  );
+                },
+                listener: (context, state) {
+                  if (state is AddToWishListSuccessState && state.productId==productEntity.id){
+                    Fluttertoast.showToast(
+                        msg: 'add',
+                        toastLength: Toast.LENGTH_SHORT,
+                        gravity: ToastGravity.BOTTOM,
+                        timeInSecForIosWeb: 1,
+                        backgroundColor: Colors.green,
+                        textColor: Colors.white,
+                        fontSize: 16.0
+                    );
+                  }
+                  if(state is AddToWishListErrorState && state.productId==productEntity.id){
+                    Fluttertoast.showToast(
+                        msg: state.error,
+                        toastLength: Toast.LENGTH_SHORT,
+                        gravity: ToastGravity.BOTTOM,
+                        timeInSecForIosWeb: 1,
+                        backgroundColor: Colors.red,
+                        textColor: Colors.white,
+                        fontSize: 16.0
+                    );
+                  }
+                },
+              )
+              /*SvgPicture.asset(
                 AssetsManager.watchedListIcon,
                 height: 30.h,
                 width: 30.w,
-              ),
+              ),*/
             ],
           ),
               SizedBox(
@@ -110,7 +168,7 @@ class ProductWidget extends StatelessWidget {
                     width: 15.w,
                   ),
                   Spacer(),
-                 BlocConsumer<HomeTabViewModel,HomeTabStates>(
+                 BlocConsumer<CartViewModel,CartViewModelState>(
                    buildWhen: (previous, current) {
                      if(current is AddToCartLoadingState||
                          current is AddToCartSuccessState||
@@ -131,7 +189,7 @@ class ProductWidget extends StatelessWidget {
                    }
                    return InkWell(
                      onTap: () {
-                    HomeTabViewModel.get(context).addToCart(productEntity.id??'');
+                    CartViewModel.get(context).addToCart(productEntity.id??'');
                      },
                      child:SvgPicture.asset(
                        AssetsManager.plusIcon,

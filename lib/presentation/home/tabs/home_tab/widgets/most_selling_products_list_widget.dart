@@ -21,7 +21,8 @@ class _MostSellingProductsListWidgetState extends State<MostSellingProductsListW
   }
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<HomeTabViewModel,HomeTabStates>
+    return
+      BlocBuilder<HomeTabViewModel,HomeTabStates>
       (buildWhen: (previous,current){
         if(current is mostSellingCategoryProductsSuccessState||current is mostSellingCategoryProductsLoadingState
         || current is mostSellingCategoryProductsErorrState){

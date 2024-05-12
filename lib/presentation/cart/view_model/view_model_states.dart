@@ -1,5 +1,7 @@
 import 'package:ecommerce/domain/entites/cart/CartResponseEntity.dart';
 
+import '../../../domain/entites/wishListEntity/AddToWhishListEntity.dart';
+
 abstract class CartViewModelState{}
 
 class GetCartViewModelInitial extends CartViewModelState{}
@@ -47,4 +49,19 @@ class UpDateCartViewModelSuccessState extends CartViewModelState{
   String productID;
   UpDateCartViewModelSuccessState(this.cartResponseEntity,this.productID);
 
+}
+///add to cart
+class AddToCartLoadingState extends CartViewModelState{
+  String productId;
+  AddToCartLoadingState(this.productId);
+}
+class AddToCartSuccessState extends CartViewModelState{
+  CartResponseEntity cartResponseEntity;
+  String productId;
+  AddToCartSuccessState(this.cartResponseEntity,this.productId);
+}
+class AddToCartErorrState extends CartViewModelState{
+  String error;
+  String productId;
+  AddToCartErorrState(this.error,this.productId);
 }

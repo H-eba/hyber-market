@@ -31,5 +31,7 @@ class SubCategoryWidget extends StatelessWidget {
           fontWeight: FontWeight.w400
         ),)
     ],);
+
+
   }
 }

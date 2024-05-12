@@ -1,5 +1,6 @@
 import 'package:ecommerce/core/DI/di.dart';
 import 'package:ecommerce/core/utils/colors_manager.dart';
+import 'package:ecommerce/core/utils/route_manager.dart';
 import 'package:ecommerce/presentation/home/tabs/Categories_tab/categories_tab_view_model.dart';
 import 'package:ecommerce/presentation/home/tabs/Categories_tab/widget/selection_category_widget.dart';
 import 'package:ecommerce/presentation/home/tabs/Categories_tab/widget/sub_category_widget.dart';
@@ -75,11 +76,24 @@ class _CategoriesTabState extends State<CategoriesTab> {
                       itemCount: state.categories.length),
                 ),
                Expanded(
-                   child:
 
-             Container(
-               //color:Colors.redAccent,
-               child: BlocBuilder<CategoriesTabViewModel,CategoriesTabStates>(
+
+
+
+
+               child:
+                  /* GridView.builder(gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                     crossAxisCount: 2,
+                      mainAxisSpacing: 16.h,
+                       crossAxisSpacing: 16.w,
+                       //childAspectRatio: 1/2
+                   ),
+                       itemCount: 9,
+                       itemBuilder:(context, index) => Container(color: Colors.purple,),)
+
+                   */
+
+               BlocBuilder<CategoriesTabViewModel,CategoriesTabStates>(
                  buildWhen: (previous, current) {
                    if(current is SubCategoriesErrorStates ||
                        current is SubCategoriesSuccessStates||
@@ -89,16 +103,22 @@ class _CategoriesTabState extends State<CategoriesTab> {
                  },
                  builder: (context, state) {
                    if (state is SubCategoriesSuccessStates){
-                     return   Expanded(
-                       child: GridView.builder(itemCount: state.subCategories.length,
-                         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                             crossAxisCount: 2,
-                             mainAxisExtent: 16.h,
-                             crossAxisSpacing: 16.w,
-                             childAspectRatio: 1/2
-                         ),
-                         itemBuilder:(context, index) =>
-                             SubCategoryWidget(subcategoryEntity: state.subCategories[index]),),
+                     return   InkWell(
+                       onTap: (){
+                         Navigator.pushNamed(context, RoutesManager.ProductsRouteName);
+                       },
+                       child: GridView.builder(
+                         itemCount:
+                         state.subCategories.length,
+                           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                               crossAxisCount: 3,
+                               mainAxisSpacing: 16.h,
+                               crossAxisSpacing: 16.w,
+                               childAspectRatio: 1/2
+                           ),
+                           itemBuilder:(context, index) =>
+                               SubCategoryWidget(subcategoryEntity: state.subCategories[index])
+                         ,),
                      );
                    }if(state is SubCategoriesErrorStates){
                      return Center(child: Text('erroe'),);
@@ -106,8 +126,9 @@ class _CategoriesTabState extends State<CategoriesTab> {
 
                  },
                ),
+
              )
-                   )
+
 
               ],
 
