@@ -7,11 +7,13 @@ import 'package:ecommerce/presentation/cart/view_model/view_model_cubit.dart';
 import 'package:ecommerce/presentation/cart/view_model/view_model_states.dart';
 import 'package:ecommerce/presentation/home/tabs/Categories_tab/categories_tab.dart';
 import 'package:ecommerce/presentation/home/tabs/home_tab/home_tab.dart';
+import 'package:ecommerce/presentation/home/tabs/home_tab/search.dart';
 import 'package:ecommerce/presentation/home/tabs/home_view_model.dart';
 import 'package:ecommerce/presentation/home/tabs/profile_tab/profilr_tab.dart';
 import 'package:ecommerce/presentation/home/tabs/whish_list_tab/wish_list.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -39,18 +41,24 @@ class HomeScreen extends StatelessWidget {
          // HomeViewModel cartViewModel=CartViewModel.get(context);
           return Scaffold(
             appBar: AppBar(
-              title: SvgPicture.asset(
+
+              title:
+              SvgPicture.asset(
                 AssetsManager.logo,
                 height: 22.h,
                 width: 66.w,
               ),
+
               actions: [
+
                 IconButton(onPressed: () {
                   PrefsHelper.clearToken();
                   Navigator.pushNamedAndRemoveUntil(context, RoutesManager.loginRouteName, (route) => false);
                 }, icon:Icon(Icons.logout) ),
 
-               BlocConsumer<CartViewModel,CartViewModelState>(
+
+
+              /* BlocConsumer<CartViewModel,CartViewModelState>(
                   buildWhen: (previous, current) {
                     if(current is AddToCartLoadingState||
                         current is AddToCartSuccessState||
@@ -79,12 +87,13 @@ class HomeScreen extends StatelessWidget {
                  listener: (context, state) {
 
                  },
-                )
+                )*/
 
 
 
               ],
             ),
+
             bottomNavigationBar: ClipRRect(
               borderRadius: BorderRadius.circular(15.r),
               child: BottomNavigationBar(
@@ -142,11 +151,72 @@ class HomeScreen extends StatelessWidget {
                 ],
               ),
             ),
-            body: tabs[homeViewModel.currentTabIndex],
+            body: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 15),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: TextField(
+                          decoration: InputDecoration(
+                              contentPadding:
+                              EdgeInsets.symmetric(vertical: 5.h),
+                              border: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    width: 1, color: Color(0xFF004182)),
+                                borderRadius: BorderRadius.circular(25),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    width: 1, color: Color(0xFF004182)),
+                                borderRadius: BorderRadius.circular(25),
+                              ),
+                              prefixIcon: InkWell(
+                                onTap: (){
+                                  showSearch(context: context, delegate: ProductsSearch());
+                                },
+                                child: Icon(
+                                  Icons.search,
+                                  color: Color(0xFF06004E),
+                                ),
+                              ),
+                              hintText: 'what do you search for?',
+                              hintStyle: TextStyle(
+                                color: Color(0x9906004E),
+                                fontSize: 14.sp,
+                                fontFamily: 'Poppins',
+                                fontWeight: FontWeight.w300,
+                              )),
+                        ),
+                      ),
+                      SizedBox(
+                        width: 20,
+                      ),
+                      InkWell(
+                        onTap: () {},
+                        child: Icon(
+                          Icons.shopping_cart,
+                          size: 30.0.sp,
+                          color: Color(0xff004182),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  height: 16.h,
+                ),
+                Expanded(child:  tabs[homeViewModel.currentTabIndex]),
+              ],
+            ),
           );
         },
-
       ),
     );
+
+
+
   }
+//tabs[homeViewModel.currentTabIndex]
 }

@@ -125,7 +125,7 @@ class BrandsInitialState extends HomeTabStates {}
 class BrandsLoadingState extends HomeTabStates {}
 class BrandsSuccessState extends HomeTabStates {
   List<BrandEntity> brands;
-  BrandsSuccessState(this.brands);
+  BrandsSuccessState(this.brands); 
 }
 class BrandsErrorState extends HomeTabStates {
   String error;

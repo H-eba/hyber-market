@@ -7,11 +7,13 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../../../../core/utils/route_manager.dart';
 import '../../../../../core/utils/strings_manager.dart';
+import '../../../../../domain/entites/ProductEntity.dart';
 
 class ProductsScreen extends StatelessWidget {
 
-  const ProductsScreen({super.key});
+ProductsScreen({ super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -19,8 +21,8 @@ class ProductsScreen extends StatelessWidget {
       create: (context) =>getIt.get<HomeTabViewModel>()..getMostSellingProducts(),
       child: Scaffold(
         appBar: AppBar(
-          centerTitle: true,
-          title: Text(StringsManager.cart),
+
+
         ),
         body: Padding(
           padding: REdgeInsets.all(15),
@@ -36,17 +38,23 @@ class ProductsScreen extends StatelessWidget {
                 return Column(
                   children: [
                     Expanded(
-                      child: SizedBox(
+                      child:  GridView.builder(
+                        gridDelegate:
+                      SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2,
+                      crossAxisSpacing: 10,
+                      mainAxisSpacing: 20,
+                        childAspectRatio: 2/2.5
+                      ),
+                          itemBuilder: (context, index) =>
 
-                        child: GridView.builder(gridDelegate:
-                        SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2,
-                        crossAxisSpacing: 10,
-                        mainAxisSpacing: 20),
-                            itemBuilder: (context, index) => ProductWidget(productEntity:state.products[index] ),
-                        itemCount: state.products.length,),
-                      )
+                              InkWell(
+                                onTap: (){
+                                  Navigator.pushNamed(context, RoutesManager.ProductDetailsRouteName,
+                                  arguments:state.products[index] );
+                                },
+                                  child: ProductWidget(productEntity:state.products[index] )),
+                      itemCount: state.products.length,)
                     ),
-
                   ],
                 );
               }if(state is mostSellingCategoryProductsErorrState){

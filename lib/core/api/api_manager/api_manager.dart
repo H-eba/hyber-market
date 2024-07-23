@@ -7,7 +7,7 @@ class ApiManager {
   static void init() {
     dio = Dio(
         BaseOptions(
-      baseUrl: Constants.baseUrl,
+          baseUrl: Constants.baseUrl,
           validateStatus: (status) {
             if(status!<500){
               return true;
@@ -15,15 +15,15 @@ class ApiManager {
               return false;
             }
           },
-    ));
+        ));
   }
 
   Future<Response> getRequest(
       {required String endPoint, Map<String, dynamic>? queryParameters,Map<String, dynamic>? headers}) async {
     var response = await dio.get(endPoint, queryParameters: queryParameters,
-      options: Options(
-          headers:headers
-      )
+        options: Options(
+            headers:headers
+        )
     );
     return response;
   }

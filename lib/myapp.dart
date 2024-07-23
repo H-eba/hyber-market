@@ -10,6 +10,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import 'presentation/home/tabs/Categories_tab/products/products_details.dart';
+
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -30,7 +32,9 @@ class MyApp extends StatelessWidget {
         RoutesManager.registerRouteName:(_)=>RegisterScreen(),
         RoutesManager.loginRouteName:(_)=>LoginScreen(),
         RoutesManager.cartRouteName:(_)=>CartScreen(),
-        RoutesManager.ProductsRouteName:(_)=>ProductsScreen()
+        RoutesManager.ProductsRouteName:(_)=>ProductsScreen(),
+      RoutesManager. ProductDetailsRouteName:(_)=> ProductDetailsScreen(),
+
       },
       theme: MyThem.lightTheme,
 
